@@ -1,88 +1,62 @@
 #!/usr/bin/python3
-"""Square module."""
+"""
+Create a Class Square with:
+- size, position private propreties
+- method of area and method of print_square
+- getters & setters.
+"""
 
 
 class Square:
-    """Defines a square."""
-
-    def __str__(self):
-        """String representation constructor of this square"""
-        self.my_print()
+    """Class - Square"""
 
     def __init__(self, size=0, position=(0, 0)):
-        """Constructor.
+        """Constructor of a Square with the size and position"""
+        self.size = size
+        self.position = position
 
-        Args:
-            size(int): length of side of the square.
-            position(int tuple): position of the square
-        """
-        if not (isinstance(size, int)):
-            raise TypeError("size must be an integer")
-        if size < 0:
-            raise ValueError("size must be >= 0")
+    def area(self):
+        """Method to get the area of the Square"""
+        return (self.__size ** 2)
 
-        self.__size = size
-        self.__position = position
+    def my_print(self):
+        """Method to print a Square with spaces"""
+        if (self.__size == 0):
+            print()
+        else:
+            for blank in range(self.position[1]):
+                print()
+            for rows in range(self.__size):
+                print(" " * self.position[0], end='')
+                print("#" * self.__size)
 
     @property
     def size(self):
-        """Properties for the length of a sise of a square.
-
-        Raises:
-            TypeError: if size is not an integer.
-            ValueError: If size < 0.
-        """
-        return self.__size
+        """Getter of the private attribute size"""
+        return (self.__size)
 
     @size.setter
     def size(self, value):
-        """setter function for private attribute size.
-           Args:
-                value: size value to set to.
-        """
-        if not (isinstance(value, int)):
-            raise TypeError("size must be an integer")
-        if value < 0:
-            raise ValueError("size must be >= 0")
-        self.__size = value
+        """Setter for the size private attribute"""
+        if (type(value) is not int):
+            raise (TypeError("size must be an integer"))
+        elif (value < 0):
+            raise (ValueError("size must be >= 0"))
+        else:
+            self.__size = value
 
     @property
     def position(self):
-        """Property for square position.
-
-        Raises:
-            TypeError: If value is not tuple of 2 positive integers.
-        """
-        return self.__position
+        """Getter of Position"""
+        return (self.__position)
 
     @position.setter
     def position(self, value):
-        """setter function for private attribute position
-           Args:
-                value: position value to set to.
-        """
-        if isinstance(value, tuple) and len(value) == 2:
-            if isinstance(value[0], int) and isinstance(value[1], int):
-                if value[0] >= 0 and value[1] >= 0:
-                    self.__position = value
+        """Setter of position"""
+        if (len(value) != 2) or (type(value) is not tuple) \
+                or (type(value[0]) is not int) \
+                or (type(value[1]) is not int) \
+                or (value[0] < 0) or (value[1] < 0):
+            raise TypeError("position must be a tuple of 2 positive integers")
         else:
-            raise TypeError("position must be tuple of 2 positive integers")
-
-    def area(self):
-        """Area of the square.
-
-        Returns:
-            thee size squared.
-        """
-        return self.__size ** 2
-
-    def my_print(self):
-        """Prints square with char #"""
-        if self.__size == 0:
-            print()
-        else:
-            i, j = 0, 0
-            for i in range(self.__position[1]):
-                print()
-            for j in range(self.__size):
-                print("{}{}".format(" " * self.__position[0], "#" * self.__size))
+            self.__position = value
