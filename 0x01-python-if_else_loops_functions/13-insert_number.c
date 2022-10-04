@@ -1,44 +1,55 @@
-#include "lists.h"
 #include <stdlib.h>
-#include <unistd.h>
+#include "lists.h"
 
 /**
- * insert_node - inserts a number in an ordered linked list
- * @head: double pointer to the linked list
- * @number: number to insert in the new node
+ * insert_node - Inserts a number into a sorted singly linked list.
  *
- * Return: address of the new node, or NULL
+ * @head: Double pointer to a singly linked list
+ *
+ * @number: Value of the new node.
+ *
+ * Return: The address of the new node, or NULL if it failed.
  */
+
 listint_t *insert_node(listint_t **head, int number)
 {
-	listint_t *current = *head;
-	listint_t *new = NULL;
-	listint_t *temp = NULL;
+	int flag = 0;
+	listint_t *new_node = NULL, *actual = NULL, *after = NULL;
 
-	if (!head)
+	if (head == NULL)
 		return (NULL);
-
-	new = malloc(sizeof(listint_t));
-	if (!new)
+	new_node = malloc(sizeof(listint_t));
+	if (!new_node)
 		return (NULL);
-	new->n = number;
-	new->next = NULL;
-
-	if (!*head || (*head)->n > number)
+	new_node->n = number, new_node->next = NULL;
+	if (*head == NULL)
 	{
-		new->next = *head;
-		return (*head = new);
+		*head = new_node;
+		return (*head);
 	}
-	else
+	actual = *head;
+	if (number <= actual->n)
 	{
-		while (current && current->n < number)
-		{
-			temp = current;
-			current = current->next;
-		}
-		temp->next = new;
-		new->next = current;
+		new_node->next = actual, *head = new_node;
+		return (*head);
 	}
-
-	return (new);
+	if (number > actual->n && !actual->next)
+	{
+		actual->next = new_node;
+		return (new_node);
+	}
+	after = actual->next;
+	while (actual)
+	{
+		if (!after)
+			actual->next = new_node, flag = 1;
+		else if (after->n == number)
+			actual->next = new_node, new_node->next = after, flag = 1;
+		else if (after->n > number && actual->n < number)
+			actual->next = new_node, new_node->next = after, flag = 1;
+		if (flag)
+			break;
+		after = after->next, actual = actual->next;
+	}
+	return (new_node);
 }
